@@ -1,0 +1,324 @@
+
+<style>
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes flicker{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.65;transform:scaleY(1.2)}}
+  @keyframes fall{0%{transform:translateY(-30px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+  @keyframes pop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+  @keyframes fadeup{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @keyframes wiggle{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+  @keyframes shine{0%,100%{opacity:.5}50%{opacity:1}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  @keyframes slidein{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.3)}28%{transform:scale(1)}}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  .page{width:100%;min-height:100vh;padding:20px 16px 36px;position:relative;overflow:hidden}
+
+  #page1{background:linear-gradient(160deg,#0d0020 0%,#2d0058 50%,#6b0080 100%)}
+  #page2{background:linear-gradient(160deg,#003366 0%,#1a0052 40%,#4a0070 80%,#cc1870 100%);display:none}
+
+  .confetti-piece{position:absolute;top:-20px;animation:fall linear infinite;border-radius:2px;pointer-events:none}
+
+  .cd-ring{width:170px;height:170px;border-radius:50%;border:6px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;animation:pulse 2s ease-in-out infinite}
+  .cd-inner{text-align:center}
+  .cd-num{font-size:36px;font-weight:700;color:#ffd700;line-height:1}
+  .cd-label{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+  .cd-sub{font-size:12px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:18px}
+
+  .p1-title{text-align:center;animation:fadeup .8s ease both;padding-top:10px}
+  .p1-title .badge{display:inline-block;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:11px;padding:3px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.2);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+  .p1-title h1{font-size:clamp(22px,6vw,36px);font-weight:700;color:#fff;line-height:1.15;text-shadow:0 0 30px rgba(200,0,255,.5)}
+  .p1-title h1 span{color:#ffd700}
+  .p1-title p{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px}
+
+  .cake-wrap{display:flex;justify-content:center;margin:16px 0 10px;animation:fadeup 1s .2s ease both}
+  .cake-svg{animation:float 3s ease-in-out infinite;filter:drop-shadow(0 6px 20px rgba(0,0,0,.5))}
+  .flame{animation:flicker .55s ease-in-out infinite;transform-origin:bottom center}
+
+  .msg-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:18px;padding:16px 18px;color:#fff;font-size:13.5px;line-height:1.85;text-align:center;animation:fadeup 1s .4s ease both;margin-bottom:14px;backdrop-filter:blur(4px)}
+  .msg-box .gold{color:#ffd700;font-weight:600}
+  .msg-box .emo{font-size:20px;letter-spacing:5px;margin:8px 0;display:block}
+
+  .gifts-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:13px;animation:fadeup 1s .55s ease both}
+  .gbox{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 8px 8px;text-align:center;width:74px;animation:bounce 2.5s ease-in-out infinite;cursor:default}
+  .gbox:nth-child(2){animation-delay:.3s}.gbox:nth-child(3){animation-delay:.6s}.gbox:nth-child(4){animation-delay:.9s}.gbox:nth-child(5){animation-delay:1.2s}.gbox:nth-child(6){animation-delay:1.5s}
+  .gico{font-size:26px;display:block}.glabel{font-size:10px;color:rgba(255,255,255,.75);margin-top:3px;line-height:1.3}
+
+  .choco-sec{background:rgba(80,35,5,.5);border:1px solid rgba(180,100,40,.35);border-radius:16px;padding:13px 15px;margin-bottom:13px;animation:fadeup 1s .7s ease both}
+  .choco-title{color:#ffd090;font-size:12.5px;font-weight:600;text-align:center;margin-bottom:9px}
+  .choco-grid{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+  .cbar{background:#5c2d0a;border:2px solid #8b4513;border-radius:8px;padding:6px 9px;color:#ffd090;font-size:10.5px;text-align:center;animation:wiggle 2.2s ease-in-out infinite;position:relative;overflow:hidden}
+  .cbar::after{content:'';position:absolute;top:2px;left:-20px;width:12px;height:100%;background:rgba(255,255,255,.13);transform:skewX(-20deg);animation:shine 2s ease-in-out infinite}
+  .cbar:nth-child(2){animation-delay:.4s}.cbar:nth-child(3){animation-delay:.8s}.cbar:nth-child(4){animation-delay:1.2s}.cbar:nth-child(5){animation-delay:1.6s}
+
+  .funny-sec{background:rgba(255,210,0,.1);border:1px solid rgba(255,220,0,.25);border-radius:16px;padding:13px 15px;margin-bottom:13px;animation:fadeup 1s .85s ease both}
+  .funny-title{color:#ffd700;font-size:12.5px;font-weight:600;text-align:center;margin-bottom:7px}
+  .fi{color:rgba(255,255,255,.85);font-size:12px;padding:3px 0;line-height:1.65;text-align:center}
+
+  .btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;animation:fadeup 1s 1s ease both;margin-bottom:10px}
+  .btn-main{background:linear-gradient(135deg,#e91e8c,#ff6b35);color:#fff;border:none;border-radius:28px;padding:10px 18px;font-size:12.5px;font-weight:600;cursor:pointer;transition:transform .15s}
+  .btn-main:hover{transform:scale(1.05)}.btn-main:active{transform:scale(.97)}
+  .btn-sec{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:28px;padding:10px 18px;font-size:12.5px;cursor:pointer;transition:transform .15s}
+  .btn-sec:hover{transform:scale(1.04)}
+
+  .action-msg{display:none;text-align:center;color:#ffd700;font-size:16px;font-weight:700;padding:10px;animation:pop .5s ease both}
+  .action-msg.show{display:block}
+
+  .from-line{text-align:center;color:rgba(255,255,255,.45);font-size:11.5px;margin-top:8px;animation:fadeup 1s 1.2s ease both}
+  .from-line span{color:#ffd700;font-weight:600}
+
+  /* page 2 */
+  .p2-header{text-align:center;padding:14px 0 6px;animation:slidein .8s ease both}
+  .p2-header h1{font-size:clamp(28px,8vw,48px);font-weight:700;color:#fff;line-height:1.1;text-shadow:0 0 40px rgba(233,30,140,.7)}
+  .p2-header h1 .gold{color:#ffd700}
+  .p2-header .sub2{font-size:13px;color:rgba(255,255,255,.65);margin-top:6px}
+
+  .big-cake{display:flex;justify-content:center;margin:18px 0 12px;animation:slidein .9s .1s ease both}
+  .big-cake svg{animation:float 2.8s ease-in-out infinite;filter:drop-shadow(0 8px 28px rgba(0,0,0,.5))}
+
+  .wish-card{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:22px;padding:20px 22px;color:#fff;text-align:center;font-size:14px;line-height:1.9;margin-bottom:16px;animation:slidein 1s .2s ease both}
+  .wish-card .gold{color:#ffd700;font-weight:600;font-size:15px}
+  .wish-card .heart{font-size:24px;animation:heartbeat 1.4s ease-in-out infinite;display:inline-block}
+
+  .star-row{display:flex;justify-content:center;gap:14px;margin-bottom:18px;animation:slidein 1s .4s ease both}
+  .star-item{text-align:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:14px 12px;flex:1;max-width:100px}
+  .star-ico{font-size:28px;display:block;animation:bounce 2s ease-in-out infinite}
+  .star-ico:nth-child(1){animation-delay:.2s}
+  .star-txt{font-size:10.5px;color:rgba(255,255,255,.75);margin-top:5px;line-height:1.4}
+
+  .p2-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;animation:slidein 1s .5s ease both}
+
+  .firework{position:absolute;pointer-events:none;font-size:22px;animation:pop .6s ease both forwards}
+
+  .p2-from{text-align:center;color:rgba(255,255,255,.4);font-size:12px;margin-top:6px;animation:slidein 1s .7s ease both}
+  .p2-from span{color:#ffd700;font-weight:600;font-size:13px}
+</style>
+
+<!-- PAGE 1: COUNTDOWN -->
+<div class="page" id="page1">
+
+  <div class="p1-title">
+    <div class="badge">✦ birthday eve ✦</div>
+    <h1>Almost Time,<br><span>Sis! 🎉</span></h1>
+    <p>Counting down to your big day...</p>
+  </div>
+
+  <div style="margin:20px 0 6px;animation:fadeup .9s .15s ease both">
+    <div class="cd-ring">
+      <div class="cd-inner">
+        <div class="cd-num" id="cd-display">--:--:--</div>
+        <div class="cd-label">until midnight</div>
+      </div>
+    </div>
+    <div class="cd-sub">🕛 When it hits 00:00:00 — the party begins!</div>
+  </div>
+
+  <div class="cake-wrap">
+    <svg class="cake-svg" width="180" height="190" viewBox="0 0 180 190" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="90" cy="172" rx="72" ry="10" fill="#3d0060" opacity=".5"/>
+      <rect x="18" y="126" width="144" height="46" rx="9" fill="#e91e8c"/>
+      <rect x="18" y="126" width="144" height="13" rx="4" fill="#ff6bbd"/>
+      <circle cx="44" cy="150" r="5" fill="#ffd700"/>
+      <circle cx="72" cy="145" r="4" fill="#fff"/>
+      <circle cx="100" cy="153" r="5" fill="#ffd700"/>
+      <circle cx="128" cy="147" r="4" fill="#fff"/>
+      <circle cx="152" cy="152" r="4" fill="#ffd700"/>
+      <rect x="32" y="90" width="116" height="40" rx="7" fill="#9c27b0"/>
+      <rect x="32" y="90" width="116" height="11" rx="4" fill="#ce93d8"/>
+      <text x="56" y="115" font-size="13" text-anchor="middle">💕</text>
+      <text x="90" y="115" font-size="13" text-anchor="middle">🌸</text>
+      <text x="124" y="115" font-size="13" text-anchor="middle">💕</text>
+      <rect x="52" y="60" width="76" height="34" rx="7" fill="#e91e8c"/>
+      <rect x="52" y="60" width="76" height="9" rx="4" fill="#ff8cd4"/>
+      <text x="90" y="82" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="700">SOON SIS!</text>
+      <rect x="64" y="40" width="7" height="20" rx="3" fill="#ffd700"/>
+      <rect x="87" y="34" width="7" height="26" rx="3" fill="#ff6b35"/>
+      <rect x="110" y="40" width="7" height="20" rx="3" fill="#ce93d8"/>
+      <g class="flame"><ellipse cx="67.5" cy="37" rx="3.5" ry="5" fill="#ff6b35" opacity=".9"/><ellipse cx="67.5" cy="38" rx="1.8" ry="2.8" fill="#ffd700"/></g>
+      <g class="flame" style="animation-delay:.2s"><ellipse cx="90.5" cy="30" rx="3.5" ry="6" fill="#ff6b35" opacity=".9"/><ellipse cx="90.5" cy="31" rx="2" ry="3.2" fill="#ffd700"/></g>
+      <g class="flame" style="animation-delay:.4s"><ellipse cx="113.5" cy="37" rx="3.5" ry="5" fill="#ff6b35" opacity=".9"/><ellipse cx="113.5" cy="38" rx="1.8" ry="2.8" fill="#ffd700"/></g>
+      <text x="90" y="28" font-size="14" text-anchor="middle">⭐</text>
+    </svg>
+  </div>
+
+  <div class="msg-box">
+    <span class="emo">🎀 👑 🌸 👑 🎀</span>
+    Hey Sis! Tomorrow is YOUR day 🥳<br>
+    <span class="gold">Moiz</span> has something special waiting for you at midnight!<br>
+    May your birthday be as beautiful as you are 💜<br>
+    Get some sleep... if you can! 😏✨
+    <span class="emo" style="margin-top:8px">✨ 🎂 💜 🎂 ✨</span>
+  </div>
+
+  <div class="gifts-row">
+    <div class="gbox"><span class="gico">💄</span><span class="glabel">Lipstick Queen</span></div>
+    <div class="gbox"><span class="gico">👜</span><span class="glabel">Designer Bag</span></div>
+    <div class="gbox"><span class="gico">💍</span><span class="glabel">Jewelry Set</span></div>
+    <div class="gbox"><span class="gico">🌸</span><span class="glabel">Perfume</span></div>
+    <div class="gbox"><span class="gico">👠</span><span class="glabel">Heels!</span></div>
+    <div class="gbox"><span class="gico">🎁</span><span class="glabel">Big Surprise</span></div>
+  </div>
+
+  <div class="choco-sec">
+    <div class="choco-title">🍫 Chocolate heaven loading... for you sis!</div>
+    <div class="choco-grid">
+      <div class="cbar">🍫 Ferrero<br>Rocher</div>
+      <div class="cbar">🍫 Cadbury<br>Silk</div>
+      <div class="cbar">🍫 Kitkat<br>Gold</div>
+      <div class="cbar">🍫 Lindt<br>Truffles</div>
+      <div class="cbar">🍫 Nutella<br>Jar</div>
+    </div>
+  </div>
+
+  <div class="funny-sec">
+    <div class="funny-title">😂 Moiz's pre-birthday roast</div>
+    <div class="fi">🎂 You're not older, you're just buffering... slowly 🐢</div>
+    <div class="fi">👑 Born to be a queen — the drama proves it daily 💅</div>
+    <div class="fi">🪞 Every mirror you pass goes "yasss bestie!" 😆</div>
+    <div class="fi">🍫 I hid your chocolates. Then I ate them. Oops 😇</div>
+    <div class="fi">🎁 Best gift = my presence. You're welcome sis 🤷</div>
+  </div>
+
+  <div class="btns">
+    <button class="btn-main" onclick="cutCake()">🎂 Cut Cake!</button>
+    <button class="btn-main" onclick="blowCdl()">💨 Blow Candles!</button>
+    <button class="btn-sec" onclick="popConf(document.getElementById('page1'),50)">🎊 Confetti!</button>
+  </div>
+  <div class="action-msg" id="act1"></div>
+  <div class="from-line">With all the love — <span>Moiz</span> 💜</div>
+</div>
+
+<!-- PAGE 2: BIRTHDAY REVEAL -->
+<div class="page" id="page2">
+  <div class="p2-header">
+    <div style="font-size:13px;color:rgba(255,255,255,.6);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">✦ it's finally here ✦</div>
+    <h1>Happy Birthday<br><span class="gold">Sis!</span> 🎉🎂</h1>
+    <div class="sub2">From <strong style="color:#ffd700">Moiz</strong> — your favourite sibling, always 😎💜</div>
+  </div>
+
+  <div class="big-cake">
+    <svg width="210" height="220" viewBox="0 0 210 220" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="105" cy="202" rx="85" ry="12" fill="#4a0080" opacity=".5"/>
+      <rect x="15" y="150" width="175" height="52" rx="10" fill="#e91e8c"/>
+      <rect x="15" y="150" width="175" height="15" rx="5" fill="#ff6bbd"/>
+      <circle cx="45" cy="176" r="6" fill="#ffd700"/>
+      <circle cx="78" cy="170" r="5" fill="#fff"/>
+      <circle cx="112" cy="179" r="6" fill="#ffd700"/>
+      <circle cx="146" cy="173" r="5" fill="#fff"/>
+      <circle cx="173" cy="177" r="5" fill="#ffd700"/>
+      <rect x="28" y="108" width="154" height="46" rx="9" fill="#9c27b0"/>
+      <rect x="28" y="108" width="154" height="13" rx="4" fill="#ce93d8"/>
+      <text x="62" y="134" font-size="15" text-anchor="middle">💕</text>
+      <text x="105" y="134" font-size="15" text-anchor="middle">🌸</text>
+      <text x="148" y="134" font-size="15" text-anchor="middle">💕</text>
+      <rect x="48" y="70" width="114" height="42" rx="9" fill="#e91e8c"/>
+      <rect x="48" y="70" width="114" height="11" rx="4" fill="#ff8cd4"/>
+      <text x="105" y="97" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">HAPPY BIRTHDAY SIS!</text>
+      <rect x="72" y="46" width="9" height="24" rx="4" fill="#ffd700"/>
+      <rect x="101" y="38" width="9" height="32" rx="4" fill="#ff6b35"/>
+      <rect x="130" y="46" width="9" height="24" rx="4" fill="#ce93d8"/>
+      <g class="flame"><ellipse cx="76.5" cy="42" rx="4" ry="6.5" fill="#ff6b35" opacity=".9"/><ellipse cx="76.5" cy="43" rx="2.2" ry="3.5" fill="#ffd700"/></g>
+      <g class="flame" style="animation-delay:.2s"><ellipse cx="105.5" cy="34" rx="4.5" ry="7.5" fill="#ff6b35" opacity=".9"/><ellipse cx="105.5" cy="35" rx="2.5" ry="4" fill="#ffd700"/></g>
+      <g class="flame" style="animation-delay:.4s"><ellipse cx="134.5" cy="42" rx="4" ry="6.5" fill="#ff6b35" opacity=".9"/><ellipse cx="134.5" cy="43" rx="2.2" ry="3.5" fill="#ffd700"/></g>
+      <text x="105" y="34" font-size="18" text-anchor="middle">⭐</text>
+    </svg>
+  </div>
+
+  <div class="wish-card">
+    <span class="heart">💜</span>
+    <br><br>
+    Sis, today the world got a little brighter because <span class="gold">YOU</span> were born 🌟<br><br>
+    You deserve every single chocolate, every gift, every candle wish — and then some 🎂🍫<br><br>
+    <span class="gold">Moiz</span> loves you more than you know... even when I eat your chocolates 😂<br><br>
+    Stay beautiful, stay dramatic, stay YOU 👑✨<br><br>
+    <span style="font-size:20px;letter-spacing:6px">🎊 🎀 🌸 🎈 🎁 💄 🍫 👑</span>
+  </div>
+
+  <div class="star-row">
+    <div class="star-item"><span class="star-ico">🌟</span><span class="star-txt">You're a Star</span></div>
+    <div class="star-item"><span class="star-ico" style="animation-delay:.3s">👑</span><span class="star-txt">Total Queen</span></div>
+    <div class="star-item"><span class="star-ico" style="animation-delay:.6s">💜</span><span class="star-txt">Best Sister</span></div>
+  </div>
+
+  <div class="p2-btns">
+    <button class="btn-main" onclick="p2Cut()">🎂 Cut the Cake!</button>
+    <button class="btn-main" onclick="p2Blow()">💨 Blow Candles!</button>
+    <button class="btn-sec" onclick="bigConfetti()">🎊 Big Confetti!</button>
+  </div>
+  <div class="action-msg" id="act2"></div>
+
+  <div class="p2-from">Made with all the love by <span>Moiz</span> — Happy Birthday Sis! 🎂💜</div>
+</div>
+
+<script>
+  function updateCD(){
+    const now=new Date();
+    const tom=new Date(now);
+    tom.setDate(now.getDate()+1);
+    tom.setHours(0,0,0,0);
+    const diff=tom-now;
+    if(diff<=0){
+      showPage2();
+      return;
+    }
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    const el=document.getElementById('cd-display');
+    if(el) el.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  function showPage2(){
+    const p1=document.getElementById('page1');
+    const p2=document.getElementById('page2');
+    p1.style.transition='opacity .8s ease';
+    p1.style.opacity='0';
+    setTimeout(()=>{
+      p1.style.display='none';
+      p2.style.display='block';
+      p2.style.opacity='0';
+      p2.style.transition='opacity .8s ease';
+      setTimeout(()=>{ p2.style.opacity='1'; bigConfetti(); },50);
+    },800);
+  }
+
+  function popConf(container,n){
+    const colors=['#e91e8c','#ffd700','#9c27b0','#ff6b35','#00bcd4','#fff','#4caf50'];
+    for(let i=0;i<n;i++){
+      const el=document.createElement('div');
+      el.className='confetti-piece';
+      el.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*1.5}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+      container.appendChild(el);
+      setTimeout(()=>el.remove(),6000);
+    }
+  }
+
+  function bigConfetti(){ popConf(document.getElementById('page2'),80); }
+
+  function showAct(id,msg){
+    const el=document.getElementById(id);
+    el.textContent=msg;
+    el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'),3500);
+  }
+
+  function cutCake(){ popConf(document.getElementById('page1'),60); showAct('act1','🎂✨ Cake is cut! Yayyy sis!! 🎉🎊'); }
+  function blowCdl(){
+    showAct('act1','💨🕯️ Candles blown! Make a wish Sis! 🌠');
+    document.querySelectorAll('#page1 .flame').forEach(f=>{ f.style.opacity='0'; f.style.transition='opacity .5s'; });
+    setTimeout(()=>{ document.querySelectorAll('#page1 .flame').forEach(f=>{ f.style.opacity='1'; }); },3500);
+  }
+  function p2Cut(){ bigConfetti(); showAct('act2','🎂🎊 Cut the cake sis! This is YOUR day!! 🥳✨'); }
+  function p2Blow(){
+    showAct('act2','💨🕯️ Wish made! May ALL your dreams come true! 🌟💜');
+    document.querySelectorAll('#page2 .flame').forEach(f=>{ f.style.opacity='0'; f.style.transition='opacity .5s'; });
+    setTimeout(()=>{ document.querySelectorAll('#page2 .flame').forEach(f=>{ f.style.opacity='1'; }); },3500);
+  }
+
+  updateCD();
+  setInterval(updateCD,1000);
+  setTimeout(()=>popConf(document.getElementById('page1'),25),600);
+</script>
